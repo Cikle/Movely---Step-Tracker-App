@@ -1,16 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import StepsCounter from '../components/StepsCounter';
+import { StyleSheet, Text, View, SafeAreaView, Button } from 'react-native';
+import { useSteps } from '../contexts/StepContext';
 
-export default function ProfileScreen() {
+const ProfileScreen = () => {
+    const { steps, activity, resetSteps } = useSteps();
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Profile Screen</Text>
-            <StepsCounter />
-            {/* Add your profile content here */}
+            <Text style={styles.title}>Profile</Text>
+            <Text style={styles.subtitle}>Total Steps: {steps}</Text>
+            <Text style={styles.subtitle}>Current Activity: {activity}</Text>
+            <Button title="Reset Steps" onPress={resetSteps} />
+            {/* Add more profile information here */}
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -21,6 +25,15 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 28,
-        color: '#ffffff',
+        marginBottom: 20,
+        fontWeight: 'bold',
+        color: "#ffffff",
+    },
+    subtitle: {
+        fontSize: 20,
+        color: '#e0e0e0',
+        marginTop: 10,
     },
 });
+
+export default ProfileScreen;

@@ -1,60 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { Accelerometer } from 'expo-sensors';
-import StepsCounter from '../components/StepsCounter';
 import { useSteps } from '../contexts/StepContext';
 
-export default function HomeScreen() {
-    const { setSteps } = useSteps();
-    const [isCounting, setIsCounting] = useState<boolean>(false);
-    const [lastY, setLastY] = useState<number>(0);
-    const [lastTimestamp, setLastTimestamp] = useState<number>(0);
-
-    useEffect(() => {
-        let subscription: { remove: () => void } | undefined;
-
-        Accelerometer.isAvailableAsync().then((result: boolean) => {
-            if (result) {
-                subscription = Accelerometer.addListener((accelerometerData) => {
-                    const { y } = accelerometerData;
-                    const threshold = 0.1;
-                    const timestamp = new Date().getTime();
-
-                    if (
-                        Math.abs(y - lastY) > threshold &&
-                        !isCounting &&
-                        (timestamp - lastTimestamp > 800)
-                    ) {
-                        setIsCounting(true);
-                        setLastY(y);
-                        setLastTimestamp(timestamp);
-
-                        setSteps((prevSteps) => prevSteps + 1);
-                        setTimeout(() => {
-                            setIsCounting(false);
-                        }, 1200);
-                    }
-                });
-            } else {
-                console.log('Accelerometer not available on this device');
-            }
-        });
-
-        return () => {
-            if (subscription) {
-                subscription.remove();
-            }
-        };
-    }, [isCounting, lastY, lastTimestamp, setSteps]);
+const HomeScreen = () => {
+    const { steps, activity } = useSteps();
 
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Movely</Text>
-            <StepsCounter />
-            {/* Add additional home screen content here */}
+            <View style={styles.infoContainer}>
+                <View style={styles.stepsContainer}>
+                    <Text style={styles.stepsText}>{steps}</Text>
+                    <Text style={styles.stepsLabel}>Steps</Text>
+                </View>
+                <Text style={styles.activityText}>{activity}</Text>
+            </View>
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -69,4 +32,30 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: "#ffffff",
     },
+    infoContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    stepsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 20,
+    },
+    stepsText: {
+        fontSize: 36,
+        color: '#bb86fc',
+        fontWeight: 'bold',
+        marginRight: 8,
+    },
+    stepsLabel: {
+        fontSize: 24,
+        color: '#e0e0e0',
+    },
+    activityText: {
+        fontSize: 20,
+        color: '#ffffff',
+        fontStyle: 'italic',
+    },
 });
+
+export default HomeScreen;

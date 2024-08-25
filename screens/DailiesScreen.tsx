@@ -1,16 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import StepsCounter from '../components/StepsCounter';
+import { useSteps } from '../contexts/StepContext';
 
-export default function DailiesScreen() {
+const DailiesScreen = () => {
+    const { steps, activity } = useSteps();
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Dailies Screen</Text>
-            <StepsCounter />
-            {/* Add your daily challenges/calendar content here */}
+            <Text style={styles.title}>Daily Challenges</Text>
+            <Text style={styles.subtitle}>Current Step Count: {steps}</Text>
+            <Text style={styles.subtitle}>Current Activity: {activity}</Text>
+            {/* Here you can add more UI for daily challenges */}
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -21,6 +24,15 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 28,
-        color: '#ffffff',
+        marginBottom: 20,
+        fontWeight: 'bold',
+        color: "#ffffff",
+    },
+    subtitle: {
+        fontSize: 20,
+        color: '#e0e0e0',
+        marginTop: 10,
     },
 });
+
+export default DailiesScreen;
