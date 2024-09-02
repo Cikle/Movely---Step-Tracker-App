@@ -22,7 +22,7 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         let subscription: ReturnType<typeof Accelerometer.addListener> | undefined;
-        Accelerometer.setUpdateInterval(50); // Update every 50ms for faster detection
+        Accelerometer.setUpdateInterval(100); // Update every 100ms for faster detection
 
         Accelerometer.isAvailableAsync().then((result: boolean) => {
             if (result) {
@@ -33,12 +33,12 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
                     const timestamp = new Date().getTime();
 
                     // Step detection threshold
-                    const stepThreshold = 1.2;
+                    const stepThreshold = 1.25;
 
                     if (
                         magnitude > stepThreshold &&
                         !isCounting &&
-                        (timestamp - lastTimestamp > 250) // Reduce delay for faster updates
+                        (timestamp - lastTimestamp > 300) // Reduce delay for faster updates
                     ) {
                         setIsCounting(true);
                         setLastY(filteredY);
