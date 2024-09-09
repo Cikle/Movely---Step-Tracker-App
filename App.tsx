@@ -20,8 +20,8 @@ export default function App() {
               backgroundColor: '#121212', // Dark background for tab bar
               borderTopColor: 'transparent', // Remove top border
             },
-            tabBarActiveTintColor: '#bb86fc', // Active tab icon color
-            tabBarInactiveTintColor: '#e0e0e0', // Inactive tab icon color
+            tabBarActiveTintColor: '#FFFAFA', // Active tab icon color
+            tabBarInactiveTintColor: 'rgba(245, 245, 245, 0.7)', // 70% opacity Inactive tab icon color
             tabBarIcon: ({ color, size }) => {
               // Initialize iconName as an empty string
               let iconName: string = '';

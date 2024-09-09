@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         marginBottom: 20,
         fontWeight: 'bold',
-        color: "#ffffff",
+        color: "#FFFAFA",
     },
     infoContainer: {
         alignItems: 'center',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
     stepsText: {
         fontSize: 36,
-        color: '#bb86fc',
+        color: '#FFFAFA',
         fontWeight: 'bold',
         marginRight: 8,
     },
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     activityText: {
         fontSize: 20,
-        color: '#ffffff',
+        color: '#FFFAFA',
         fontStyle: 'italic',
     },
 });

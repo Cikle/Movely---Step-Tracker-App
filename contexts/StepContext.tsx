@@ -16,9 +16,13 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
     const [lastTimestamp, setLastTimestamp] = useState<number>(0);
     const [activity, setActivity] = useState<string>('Standing');
     const [timeIntervals, setTimeIntervals] = useState<number[]>([]);
+    const [lastMovementTime, setLastMovementTime] = useState<number>(Date.now());
 
     const alpha = 0.9; // Filter smoothing factor
     const lowPassFilter = (value: number, lastValue: number) => alpha * lastValue + (1 - alpha) * value;
+
+    // Time after which activity should be considered "Standing" if no movement
+    const inactivityTimeout = 2000; // 2 seconds
 
     useEffect(() => {
         let subscription: ReturnType<typeof Accelerometer.addListener> | undefined;
@@ -45,8 +49,9 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
 
                         // Calculate the time interval between this and the last step
                         const interval = timestamp - lastTimestamp;
-                        setTimeIntervals(prevIntervals => [...prevIntervals.slice(-9), interval]); // Keep the last 10 intervals
+                        setTimeIntervals((prevIntervals) => [...prevIntervals.slice(-9), interval]); // Keep the last 10 intervals
                         setLastTimestamp(timestamp);
+                        setLastMovementTime(Date.now()); // Update the last movement timestamp
 
                         setSteps((prevSteps) => prevSteps + 1);
                         setTimeout(() => {
@@ -59,13 +64,13 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
                             const stepsPerSecond = 1000 / avgInterval;
 
                             // Classify the activity
-                            if (stepsPerSecond >= 3) {
+                            if (stepsPerSecond >= 2.8) {
                                 setActivity('Running');
-                            } else if (stepsPerSecond >= 2.5) {
+                            } else if (stepsPerSecond >= 1.8) {
                                 setActivity('Jogging');
-                            } else if (stepsPerSecond >= 1.5) {
-                                setActivity('Walking');
                             } else if (stepsPerSecond >= 0.5) {
+                                setActivity('Walking');
+                            } else {
                                 setActivity('Standing');
                             }
                         }
@@ -76,12 +81,21 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
             }
         });
 
+        // Check if user has been inactive for a period (3 seconds)
+        const inactivityCheck = setInterval(() => {
+            if (Date.now() - lastMovementTime > inactivityTimeout) {
+                setActivity('Standing');
+                setTimeIntervals([]); // Clear the intervals if no movement is detected
+            }
+        }, 1000); // Check inactivity every 1 second
+
         return () => {
             if (subscription) {
                 subscription.remove();
             }
+            clearInterval(inactivityCheck);
         };
-    }, [isCounting, lastY, lastTimestamp, timeIntervals]);
+    }, [isCounting, lastY, lastTimestamp, timeIntervals, lastMovementTime]);
 
     const resetSteps = () => setSteps(0);
 
