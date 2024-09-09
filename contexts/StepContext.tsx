@@ -22,7 +22,8 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
     const lowPassFilter = (value: number, lastValue: number) => alpha * lastValue + (1 - alpha) * value;
 
     // Time after which activity should be considered "Standing" if no movement
-    const inactivityTimeout = 2000; // 2 seconds
+    const inactivityTimeout = 1000; // 3 seconds of inactivity to consider "Standing"
+    const stepIntervalThreshold = 500; // Minimum interval between steps in milliseconds
 
     useEffect(() => {
         let subscription: ReturnType<typeof Accelerometer.addListener> | undefined;
@@ -42,7 +43,7 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
                     if (
                         magnitude > stepThreshold &&
                         !isCounting &&
-                        (timestamp - lastTimestamp > 300) // Reduce delay for faster updates
+                        (timestamp - lastTimestamp > stepIntervalThreshold) // Ensure minimum interval between steps
                     ) {
                         setIsCounting(true);
                         setLastY(filteredY);
@@ -56,7 +57,7 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
                         setSteps((prevSteps) => prevSteps + 1);
                         setTimeout(() => {
                             setIsCounting(false);
-                        }, 20); // Delay to avoid overcounting, adjusted for faster updates
+                        }, 100); // Increase delay to avoid overcounting
 
                         // Calculate steps per second based on recent intervals
                         if (timeIntervals.length > 0) {
