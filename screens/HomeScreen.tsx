@@ -30,6 +30,12 @@ const HomeScreen = () => {
         }
     }, [activity]);
 
+    useEffect(() => {
+        if (animationRef.current && activity !== 'Standing') {
+            animationRef.current.play(); // Ensure animation is playing based on speed change and activity
+        }
+    }, [speed]);
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Movely</Text>
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
     },
     animation: {
         width: '100%',
-        aspectRatio: 2, 
+        aspectRatio: 2,
     }
 });
 

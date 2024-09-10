@@ -22,8 +22,8 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
     const lowPassFilter = (value: number, lastValue: number) => alpha * lastValue + (1 - alpha) * value;
 
     // Time after which activity should be considered "Standing" if no movement
-    const inactivityTimeout = 1000; // 3 seconds of inactivity to consider "Standing"
-    const stepIntervalThreshold = 500; // Minimum interval between steps in milliseconds
+    const inactivityTimeout = 1000; // 1 seconds of inactivity to consider "Standing"
+    const stepIntervalThreshold = 300; // Minimum interval between steps in milliseconds
 
     useEffect(() => {
         let subscription: ReturnType<typeof Accelerometer.addListener> | undefined;
