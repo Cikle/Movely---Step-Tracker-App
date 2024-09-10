@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
-import DailiesScreen from './screens/DailiesScreen';
+import DailiesScreen from './screens/ChallengesScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { StepProvider } from './contexts/StepContext';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import the icon library
