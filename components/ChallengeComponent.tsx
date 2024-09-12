@@ -25,8 +25,14 @@ const ChallengeComponent: React.FC<Challenge> = ({ title, goal, progress, isUnlo
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.progress}>
-                {isUnlocked ? `You've sucessfully made ${goal} steps` : `Current progress: ${progress} / ${goal}`}
-            </Text>
+    {isUnlocked
+        ? claimed
+            ? `You've already made ${goal} steps`
+            : `You've successfully made ${progress} steps`
+        : `Current progress: ${progress} / ${goal} steps`}
+</Text>
+
+
             <TouchableOpacity
                 style={[
                     styles.progressBarContainer,
