@@ -3,9 +3,18 @@ import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Fla
 import LottieView from 'lottie-react-native';
 import { useSteps } from '../contexts/StepContext';
 import streetAnimation from '../assets/Street_Animation.json'; // Adjust path if needed
+import { StackNavigationProp } from '@react-navigation/stack'; // Import for navigation typing
 import { useNavigation } from '@react-navigation/native'; // Import for navigation
 
 const { width, height } = Dimensions.get('window'); // Get screen width and height
+
+// Define the type for your navigation stack
+type RootStackParamList = {
+  Home: undefined;
+  Challenges: undefined;
+};
+
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const animationSpeeds: { [key: string]: number } = {
     Standing: 0.0, // Set to 0 to stop animation
@@ -32,7 +41,7 @@ const sampleChallenges: Challenge[] = [
 const HomeScreen = () => {
     const { steps, activity } = useSteps();
     const animationRef = useRef<LottieView>(null); // Create a ref to control the animation
-    const navigation = useNavigation(); // Initialize navigation
+    const navigation = useNavigation<HomeScreenNavigationProp>(); // Correctly type the navigation
     const calories = 200; // Example calorie count, update as needed
 
     // Ensure activity is a valid key for animationSpeeds
