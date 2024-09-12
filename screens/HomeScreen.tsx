@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { useSteps } from '../contexts/StepContext';
 import streetAnimation from '../assets/Street_Animation.json'; // Adjust path if needed
+import { useNavigation } from '@react-navigation/native'; // Import for navigation
 
-const { width } = Dimensions.get('window'); // Get screen width
+const { width, height } = Dimensions.get('window'); // Get screen width and height
 
 const animationSpeeds: { [key: string]: number } = {
     Standing: 0.0, // Set to 0 to stop animation
@@ -13,9 +14,26 @@ const animationSpeeds: { [key: string]: number } = {
     Running: 2.0
 };
 
+// Define Challenge type
+interface Challenge {
+    title: string;
+    goal: number;
+    progress: number;
+    isUnlocked: boolean;
+}
+
+// Sample data for challenges
+const sampleChallenges: Challenge[] = [
+    { title: 'Daily Steps', goal: 5000, progress: 3500, isUnlocked: true },
+    { title: 'Weekly Steps', goal: 30000, progress: 15000, isUnlocked: true },
+    { title: 'Monthly Steps', goal: 100000, progress: 75000, isUnlocked: true }
+];
+
 const HomeScreen = () => {
     const { steps, activity } = useSteps();
     const animationRef = useRef<LottieView>(null); // Create a ref to control the animation
+    const navigation = useNavigation(); // Initialize navigation
+    const calories = 200; // Example calorie count, update as needed
 
     // Ensure activity is a valid key for animationSpeeds
     const speed = animationSpeeds[activity as keyof typeof animationSpeeds] || 1.0; // Default to 1.0 if activity is not recognized
@@ -36,24 +54,47 @@ const HomeScreen = () => {
         }
     }, [speed]);
 
+    const handleNavigateToChallenges = () => {
+        navigation.navigate('Challenges'); // Navigate to the ChallengesScreen
+    };
+
+    // Render each challenge with type annotation
+    const renderChallengeItem = ({ item }: { item: Challenge }) => (
+        <View style={styles.challengeItem}>
+            <Text style={styles.challengeTitle}>{item.title}</Text>
+            <Text style={styles.challengeProgress}>
+                {item.progress} / {item.goal} steps
+            </Text>
+        </View>
+    );
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Movely</Text>
-            <View style={styles.infoContainer}>
-                <View style={styles.stepsContainer}>
+            <View style={styles.borderContainer}>
+                <Text style={styles.caloriesText}>{calories} kcal</Text>
+                <View style={styles.stepCounterContainer}>
+                    <Text style={styles.stepsTodayText}>steps today</Text>
                     <Text style={styles.stepsText}>{steps}</Text>
-                    <Text style={styles.stepsLabel}>Steps</Text>
                 </View>
-                <Text style={styles.activityText}>{activity}</Text>
+                <LottieView
+                    ref={animationRef}
+                    source={streetAnimation}
+                    autoPlay
+                    loop
+                    speed={speed}
+                    style={styles.animation}
+                />
             </View>
-            <LottieView
-                ref={animationRef} // Attach the ref to the LottieView
-                source={streetAnimation}
-                autoPlay
-                loop
-                speed={speed} // Adjust animation speed based on activity
-                style={[styles.animation, { width }]} // Set width to screen width
-            />
+            <TouchableOpacity style={styles.challengesBox} onPress={handleNavigateToChallenges}>
+                <Text style={styles.challengesTitle}>Current Challenges</Text>
+                <FlatList
+                    data={sampleChallenges}
+                    renderItem={renderChallengeItem}
+                    keyExtractor={(item) => item.title}
+                    style={styles.challengesList}
+                    scrollEnabled={false} // Prevent scrolling within the challenges box
+                />
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -65,40 +106,92 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title: {
-        fontSize: 28,
+    borderContainer: {
+        borderWidth: 2, // Border width for the container
+        borderColor: '#FFFAFA', // Border color for the container
+        borderTopWidth: 2, // Keep the top border
+        borderLeftWidth: 2, // Keep the left border
+        borderRightWidth: 2, // Keep the right border
+        borderBottomWidth: 0, // Remove the bottom border
+        borderRadius: 0, // No border radius
+        width: width, // Full screen width
+        height: height * 0.4, // Adjust height as needed, for example, 40% of the screen height
         marginBottom: 20,
-        fontWeight: 'bold',
-        color: "#FFFAFA",
+        overflow: 'hidden', // Hide overflow to ensure clean borders
+        justifyContent: 'center', // Center content vertically
+        alignItems: 'center', // Center content horizontally
+        position: 'relative', // Relative position to contain absolutely positioned children
     },
-    infoContainer: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    stepsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        margin: 20,
-    },
-    stepsText: {
-        fontSize: 36,
+    caloriesText: {
+        position: 'absolute', // Position absolutely to place at the top-left corner
+        top: 10, // Adjust top position as needed
+        left: 10, // Adjust left position as needed
+        fontSize: 12,
         color: '#FFFAFA',
         fontWeight: 'bold',
-        marginRight: 8,
+        zIndex: 2, // Ensure calorie counter is on top
+    },
+    stepCounterContainer: {
+        position: 'absolute', // Position absolutely within the borderContainer
+        top: 50, // Adjust to position above the animation
+        alignItems: 'center',
+        zIndex: 2, // Ensure step counter is on top
+    },
+    stepsTodayText: {
+        fontSize: 12,
+        color: '#e0e0e0',
+        marginBottom: -1,
+    },
+    stepsText: {
+        fontSize: 25,
+        color: '#FFFAFA',
+        fontWeight: 'bold',
+        marginBottom: 5,
     },
     stepsLabel: {
         fontSize: 24,
         color: '#e0e0e0',
     },
-    activityText: {
-        fontSize: 20,
-        color: '#FFFAFA',
-        fontStyle: 'italic',
-    },
     animation: {
         width: '100%',
         aspectRatio: 2,
-    }
+        position: 'absolute', // Ensure animation stays within its container
+        bottom: 0, // Align to bottom of the container
+        zIndex: 1, // Ensure animation is below the step counter
+    },
+    challengesBox: {
+        backgroundColor: '#333',
+        borderRadius: 8,
+        padding: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '80%',
+        marginBottom: 20,
+    },
+    challengesTitle: {
+        fontSize: 18,
+        color: '#FFFAFA',
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    challengesList: {
+        width: '100%',
+    },
+    challengeItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#444',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+    },
+    challengeTitle: {
+        fontSize: 16,
+        color: '#FFF',
+        fontWeight: 'bold',
+    },
+    challengeProgress: {
+        fontSize: 14,
+        color: '#CCC',
+    },
 });
 
 export default HomeScreen;
