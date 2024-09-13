@@ -2,13 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { useSteps } from '../contexts/StepContext';
+import { useChallenges, Challenge } from '../utils/challenges'; // Adjust path as needed
 import streetAnimation from '../assets/Street_Animation.json'; // Adjust path if needed
 import { StackNavigationProp } from '@react-navigation/stack'; // Import for navigation typing
 import { useNavigation } from '@react-navigation/native'; // Import for navigation
 
 const { width, height } = Dimensions.get('window'); // Get screen width and height
 
-// Define the type for your navigation stack
 type RootStackParamList = {
     Home: undefined;
     Challenges: undefined;
@@ -16,6 +16,7 @@ type RootStackParamList = {
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
+// Define animation speeds for different activities
 const animationSpeeds: { [key: string]: number } = {
     Standing: 0.0, // Set to 0 to stop animation
     Walking: 1.0,
@@ -23,28 +24,13 @@ const animationSpeeds: { [key: string]: number } = {
     Running: 2.0
 };
 
-// Define Challenge type
-interface Challenge {
-    title: string;
-    goal: number;
-    progress: number;
-    isUnlocked: boolean;
-}
-
-// Sample data for challenges
-const sampleChallenges: Challenge[] = [
-    { title: 'Daily Steps', goal: 5000, progress: 3500, isUnlocked: true },
-    { title: 'Weekly Steps', goal: 30000, progress: 15000, isUnlocked: true },
-    { title: 'Monthly Steps', goal: 100000, progress: 75000, isUnlocked: true }
-];
-
 const HomeScreen = () => {
     const { steps, activity } = useSteps();
+    const { challenges, updateChallengeProgress } = useChallenges(steps); // Pass steps to hook
     const animationRef = useRef<LottieView>(null); // Create a ref to control the animation
     const navigation = useNavigation<HomeScreenNavigationProp>(); // Correctly type the navigation
     const calories = 200; // Example calorie count, update as needed
 
-    // Ensure activity is a valid key for animationSpeeds
     const speed = animationSpeeds[activity as keyof typeof animationSpeeds] || 1.0; // Default to 1.0 if activity is not recognized
 
     useEffect(() => {
@@ -67,7 +53,6 @@ const HomeScreen = () => {
         navigation.navigate('Challenges'); // Navigate to the ChallengesScreen
     };
 
-    // Render each challenge with type annotation
     const renderChallengeItem = ({ item }: { item: Challenge }) => (
         <View style={styles.challengeItem}>
             <Text style={styles.challengeTitle}>{item.title}</Text>
@@ -99,7 +84,7 @@ const HomeScreen = () => {
             <TouchableOpacity style={styles.challengesBox} onPress={handleNavigateToChallenges}>
                 <Text style={styles.challengesTitle}>Current Challenges</Text>
                 <FlatList
-                    data={sampleChallenges}
+                    data={challenges}
                     renderItem={renderChallengeItem}
                     keyExtractor={(item) => item.title}
                     style={styles.challengesList}
@@ -159,10 +144,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 5,
     },
-    stepsLabel: {
-        fontSize: 24,
-        color: '#e0e0e0',
-    },
     animation: {
         width: '80%',
         aspectRatio: 2,
@@ -207,7 +188,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         alignSelf: 'flex-start',
         marginLeft: 10,
-
     },
     challengesList: {
         width: '100%',
@@ -226,6 +206,20 @@ const styles = StyleSheet.create({
     challengeProgress: {
         fontSize: 14,
         color: '#CCC',
+    },
+    claimButton: {
+        marginTop: 5,
+        backgroundColor: '#4CAF50',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+    },
+    claimedButton: {
+        backgroundColor: '#9E9E9E',
+    },
+    claimButtonText: {
+        color: '#FFF',
+        fontWeight: 'bold',
     },
 });
 

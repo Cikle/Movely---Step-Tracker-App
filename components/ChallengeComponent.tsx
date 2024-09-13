@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-interface Challenge {
+interface ChallengeProps {
     title: string;
     goal: number;
     progress: number;
@@ -10,14 +10,14 @@ interface Challenge {
     onClaim: (title: string) => void;
 }
 
-const ChallengeComponent: React.FC<Challenge> = ({ title, goal, progress, isUnlocked, onClaim }) => {
+const ChallengeComponent: React.FC<ChallengeProps> = ({ title, goal, progress, isUnlocked, onClaim }) => {
     const [claimed, setClaimed] = useState(false);
     const progressPercentage = (progress / goal) * 100;
 
     const handleClaim = () => {
         if (isUnlocked && !claimed) {
             onClaim(title);
-            setClaimed(true); // Update claim state
+            setClaimed(true);
         }
     };
 
@@ -27,19 +27,17 @@ const ChallengeComponent: React.FC<Challenge> = ({ title, goal, progress, isUnlo
             <Text style={styles.progress}>
                 {isUnlocked
                     ? claimed
-                        ? `You've already made ${goal} steps`
-                        : `You've successfully made ${progress} steps`
+                        ? `You've already claimed ${goal} steps`
+                        : `You've made ${progress} steps`
                     : `Current progress: ${progress} / ${goal} steps`}
             </Text>
-
-
             <TouchableOpacity
                 style={[
                     styles.progressBarContainer,
                     !isUnlocked && styles.lockedButton,
-                    claimed && styles.claimedButton, // Apply dark background when claimed
+                    claimed && styles.claimedButton,
                 ]}
-                disabled={!isUnlocked || claimed} // Disable if not unlocked or already claimed
+                disabled={!isUnlocked || claimed}
                 onPress={handleClaim}
             >
                 <View style={[styles.progressBar, { width: `${progressPercentage}%` }]} />
