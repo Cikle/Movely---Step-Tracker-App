@@ -10,8 +10,8 @@ const { width, height } = Dimensions.get('window'); // Get screen width and heig
 
 // Define the type for your navigation stack
 type RootStackParamList = {
-  Home: undefined;
-  Challenges: undefined;
+    Home: undefined;
+    Challenges: undefined;
 };
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -93,6 +93,8 @@ const HomeScreen = () => {
                     speed={speed}
                     style={styles.animation}
                 />
+                <View style={styles.leftCornerLine} />
+                <View style={styles.rightCornerLine} />
             </View>
             <TouchableOpacity style={styles.challengesBox} onPress={handleNavigateToChallenges}>
                 <Text style={styles.challengesTitle}>Current Challenges</Text>
@@ -116,11 +118,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     borderContainer: {
-        borderWidth: 2, // Border width for the container
+        borderWidth: 1, // Border width for the container
         borderColor: '#FFFAFA', // Border color for the container
-        borderTopWidth: 2, // Keep the top border
-        borderLeftWidth: 2, // Keep the left border
-        borderRightWidth: 2, // Keep the right border
+        borderTopWidth: 1, // Keep the top border
+        borderLeftWidth: 1, // Keep the left border
+        borderRightWidth: 1, // Keep the right border
         borderBottomWidth: 0, // Remove the bottom border
         borderRadius: 0, // No border radius
         width: width, // Full screen width
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     },
     stepCounterContainer: {
         position: 'absolute', // Position absolutely within the borderContainer
-        top: 50, // Adjust to position above the animation
+        top: 90, // Adjust to position above the animation
         alignItems: 'center',
         zIndex: 2, // Ensure step counter is on top
     },
@@ -162,19 +164,40 @@ const styles = StyleSheet.create({
         color: '#e0e0e0',
     },
     animation: {
-        width: '100%',
+        width: '80%',
         aspectRatio: 2,
         position: 'absolute', // Ensure animation stays within its container
         bottom: 0, // Align to bottom of the container
         zIndex: 1, // Ensure animation is below the step counter
     },
+    leftCornerLine: {
+        position: 'absolute',
+        bottom: 70,
+        left: -40,
+        width: 200, // Adjust the length of the line
+        height: 1, // Line thickness
+        backgroundColor: '#FFFAFA',
+        transform: [{ rotate: '-50deg' }], // Angle upwards and inwards
+    },
+    rightCornerLine: {
+        position: 'absolute',
+        bottom: 70,
+        right: -40,
+        width: 200, // Adjust the length of the line
+        height: 1, // Line thickness
+        backgroundColor: '#FFFAFA',
+        transform: [{ rotate: '50deg' }], // Angle upwards and inwards
+    },
     challengesBox: {
-        backgroundColor: '#333',
-        borderRadius: 8,
+        marginTop: 20,
+        backgroundColor: 'transparent',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#C1C1C1',
         padding: 15,
         alignItems: 'center',
         justifyContent: 'center',
-        width: '80%',
+        width: '95%',
         marginBottom: 20,
     },
     challengesTitle: {
@@ -182,6 +205,9 @@ const styles = StyleSheet.create({
         color: '#FFFAFA',
         fontWeight: 'bold',
         marginBottom: 10,
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+
     },
     challengesList: {
         width: '100%',
