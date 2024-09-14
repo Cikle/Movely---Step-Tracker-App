@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Fla
 import LottieView from 'lottie-react-native';
 import { useSteps } from '../contexts/StepContext';
 import { useChallenges, Challenge } from '../utils/challenges';
+import { useCalories } from '../contexts/CaloriesContext'; // Import useCalories
 import streetAnimation from '../assets/Street_Animation.json';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -27,11 +28,11 @@ const animationSpeeds: { [key: string]: number } = {
 const HomeScreen = () => {
     const { steps, activity } = useSteps();
     const { challenges, updateChallengeProgress } = useChallenges(steps);
+    const { calories } = useCalories();
     const animationRef = useRef<LottieView>(null);
     const navigation = useNavigation<HomeScreenNavigationProp>();
-    const calories = Math.floor(steps * 0.04); // Full number of calories
 
-    const speed = animationSpeeds[activity as keyof typeof animationSpeeds] || 1.0; // Default to 1.0 if activity is not recognized
+    const speed = animationSpeeds[activity as keyof typeof animationSpeeds] || 1.0;
 
     useEffect(() => {
         if (animationRef.current) {
