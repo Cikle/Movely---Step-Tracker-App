@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { StepProvider } from './contexts/StepContext';
-import { CaloriesProvider } from './contexts/CaloriesContext'; // Import CaloriesContext
+import { CaloriesProvider } from './contexts/CaloriesContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Font from 'expo-font';
 
