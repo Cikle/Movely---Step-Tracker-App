@@ -8,6 +8,7 @@ import { StepProvider } from './contexts/StepContext';
 import { CaloriesProvider } from './contexts/CaloriesContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Font from 'expo-font';
+import { StatusBar } from 'expo-status-bar'; // Import StatusBar from expo-status-bar
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,7 @@ export default function App() {
     <StepProvider>
       <CaloriesProvider>
         <NavigationContainer>
+          <StatusBar style="light" />
           <Tab.Navigator
             screenOptions={({ route }) => ({
               headerShown: false,

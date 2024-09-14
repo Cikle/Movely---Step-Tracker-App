@@ -11,9 +11,10 @@ export interface Challenge {
 
 
 const initialChallenges: Challenge[] = [
-    { title: 'Daily Challenge', goal: 10, progress: 0, isUnlocked: false },
-    { title: 'Weekly Challenge', goal: 20, progress: 0, isUnlocked: false },
-    { title: 'Monthly Challenge', goal: 30, progress: 0, isUnlocked: false },
+    { title: 'Test Challenge', goal: 10, progress: 0, isUnlocked: false },
+    { title: 'Daily Challenge', goal: 5000, progress: 0, isUnlocked: false },
+    { title: 'Weekly Challenge', goal: 32500, progress: 0, isUnlocked: false },
+    { title: 'Monthly Challenge', goal: 120000, progress: 0, isUnlocked: false },
 ];
 
 export const useChallenges = (steps: number) => {
