@@ -1,18 +1,19 @@
+// contexts/CaloriesContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useSteps } from './StepContext';
+import { useSteps } from './StepContext'; // Assuming you already have StepContext
 
-interface CaloriesContextProps {
+interface CaloriesContextType {
     calories: number;
 }
 
-const CaloriesContext = createContext<CaloriesContextProps | undefined>(undefined);
+const CaloriesContext = createContext<CaloriesContextType | undefined>(undefined);
 
 export const CaloriesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { steps } = useSteps();
+    const { steps } = useSteps();  // Access steps from StepContext
     const [calories, setCalories] = useState<number>(0);
 
     useEffect(() => {
-        // Calculate calories based on steps and count only full numbers
+        // 0.04 calories per step, round to full number
         const calculatedCalories = Math.floor(steps * 0.04);
         setCalories(calculatedCalories);
     }, [steps]);
@@ -24,7 +25,7 @@ export const CaloriesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     );
 };
 
-export const useCalories = (): CaloriesContextProps => {
+export const useCalories = (): CaloriesContextType => {
     const context = useContext(CaloriesContext);
     if (!context) {
         throw new Error('useCalories must be used within a CaloriesProvider');

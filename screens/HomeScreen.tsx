@@ -29,7 +29,7 @@ const HomeScreen = () => {
     const { challenges, updateChallengeProgress } = useChallenges(steps);
     const animationRef = useRef<LottieView>(null);
     const navigation = useNavigation<HomeScreenNavigationProp>();
-    const calories = 200;
+    const calories = Math.floor(steps * 0.04); // Full number of calories
 
     const speed = animationSpeeds[activity as keyof typeof animationSpeeds] || 1.0; // Default to 1.0 if activity is not recognized
 
@@ -206,20 +206,6 @@ const styles = StyleSheet.create({
     challengeProgress: {
         fontSize: 14,
         color: '#CCC',
-    },
-    claimButton: {
-        marginTop: 5,
-        backgroundColor: '#4CAF50',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderRadius: 5,
-    },
-    claimedButton: {
-        backgroundColor: '#9E9E9E',
-    },
-    claimButtonText: {
-        color: '#FFF',
-        fontWeight: 'bold',
     },
 });
 
