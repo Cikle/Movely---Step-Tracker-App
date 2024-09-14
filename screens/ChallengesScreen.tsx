@@ -42,14 +42,14 @@ const ChallengesScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 0,
+        paddingTop: '50%',
         flex: 1,
         backgroundColor: '#121212',
         alignItems: 'center',
         justifyContent: 'center',
     },
     challengesList: {
-        width: '100%',
+        width: '90%',
     },
 });
 
