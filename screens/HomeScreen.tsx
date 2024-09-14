@@ -7,7 +7,7 @@ import streetAnimation from '../assets/Street_Animation.json';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window'); //Get screen width and height
+const { width, height } = Dimensions.get('window'); // Get screen width and height
 
 type RootStackParamList = {
     Home: undefined;
@@ -65,7 +65,11 @@ const HomeScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.borderContainer}>
-                <Text style={styles.caloriesText}>{calories} kcal</Text>
+                <View style={styles.caloriesContainer}>
+                    <Text style={styles.caloriesLabel}>Calories burnt today:</Text>
+                    <Text style={styles.caloriesValue}>{calories} kcal</Text>
+                </View>
+                <Text style={styles.infoText}>ⓘ  Steps may not be accurate due to limiting</Text>
                 <View style={styles.stepCounterContainer}>
                     <Text style={styles.stepsTodayText}>steps today</Text>
                     <Text style={styles.stepsText}>{steps}</Text>
@@ -118,14 +122,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'relative',
     },
-    caloriesText: {
+    caloriesContainer: {
         position: 'absolute',
         top: 10,
         left: 10,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    },
+    caloriesLabel: {
         fontSize: 12,
-        color: '#FFFAFA',
+        color: '#FFFFFF',
+        fontFamily: 'gotham-thin',
+    },
+    caloriesValue: {
+        fontSize: 18,
+        color: '#FFFFFF',
+        fontFamily: 'gotham-black',
         fontWeight: 'bold',
+        marginTop: 2,
+    },
+    infoText: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        fontSize: 12,
+        color: '#FFFFFF',
+        fontFamily: 'gotham-thin',
         zIndex: 2,
+        width: 100,
+        textAlign: 'right',
     },
     stepCounterContainer: {
         position: 'absolute',
@@ -134,13 +159,15 @@ const styles = StyleSheet.create({
         zIndex: 2,
     },
     stepsTodayText: {
-        fontSize: 12,
+        fontSize: 15,
         color: '#e0e0e0',
+        fontFamily: 'gotham-thin',
         marginBottom: -1,
     },
     stepsText: {
         fontSize: 25,
         color: '#FFFAFA',
+        fontFamily: 'gotham-black',
         fontWeight: 'bold',
         marginBottom: 5,
     },
@@ -184,10 +211,10 @@ const styles = StyleSheet.create({
     challengesTitle: {
         fontSize: 18,
         color: '#FFFAFA',
-        fontWeight: 'bold',
+        fontFamily: 'gotham-black',
         marginBottom: 10,
         alignSelf: 'flex-start',
-        marginLeft: 10,
+        marginLeft: 9,
     },
     challengesList: {
         width: '100%',
@@ -201,11 +228,12 @@ const styles = StyleSheet.create({
     challengeTitle: {
         fontSize: 16,
         color: '#FFF',
-        fontWeight: 'bold',
+        fontFamily: 'gotham-bold',
     },
     challengeProgress: {
         fontSize: 14,
         color: '#CCC',
+        fontFamily: 'gotham-thin',
     },
 });
 

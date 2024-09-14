@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { StepProvider } from './contexts/StepContext';
-import { CaloriesProvider } from './contexts/CaloriesContext';  // Import CaloriesContext
+import { CaloriesProvider } from './contexts/CaloriesContext'; // Import CaloriesContext
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Font from 'expo-font';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'gotham-black': require('./fonts/Gotham-Black.otf'),
+        'gotham-bold': require('./fonts/Gotham-Bold.otf'),
+        'gotham-thin': require('./fonts/Gotham-Thin.otf'),
+      });
+      setFontsLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null; // or a loading component
+  }
+
   return (
     <StepProvider>
       <CaloriesProvider>
