@@ -11,7 +11,6 @@ const ProfileScreen = () => {
             <Text style={styles.subtitle}>Total Steps: {steps}</Text>
             <Text style={styles.subtitle}>Current Activity: {activity}</Text>
             <Button title="Reset Steps" onPress={resetSteps} />
-            {/* Add more profile information here */}
         </SafeAreaView>
     );
 };

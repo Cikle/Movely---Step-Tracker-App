@@ -2,12 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { useSteps } from '../contexts/StepContext';
-import { useChallenges, Challenge } from '../utils/challenges'; // Adjust path as needed
-import streetAnimation from '../assets/Street_Animation.json'; // Adjust path if needed
-import { StackNavigationProp } from '@react-navigation/stack'; // Import for navigation typing
-import { useNavigation } from '@react-navigation/native'; // Import for navigation
+import { useChallenges, Challenge } from '../utils/challenges';
+import streetAnimation from '../assets/Street_Animation.json';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window'); // Get screen width and height
+const { width, height } = Dimensions.get('window'); //Get screen width and height
 
 type RootStackParamList = {
     Home: undefined;
@@ -16,9 +16,9 @@ type RootStackParamList = {
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
-// Define animation speeds for different activities
+// animation speed
 const animationSpeeds: { [key: string]: number } = {
-    Standing: 0.0, // Set to 0 to stop animation
+    Standing: 0.0,
     Walking: 1.0,
     Jogging: 1.5,
     Running: 2.0
@@ -26,31 +26,31 @@ const animationSpeeds: { [key: string]: number } = {
 
 const HomeScreen = () => {
     const { steps, activity } = useSteps();
-    const { challenges, updateChallengeProgress } = useChallenges(steps); // Pass steps to hook
-    const animationRef = useRef<LottieView>(null); // Create a ref to control the animation
-    const navigation = useNavigation<HomeScreenNavigationProp>(); // Correctly type the navigation
-    const calories = 200; // Example calorie count, update as needed
+    const { challenges, updateChallengeProgress } = useChallenges(steps);
+    const animationRef = useRef<LottieView>(null);
+    const navigation = useNavigation<HomeScreenNavigationProp>();
+    const calories = 200;
 
     const speed = animationSpeeds[activity as keyof typeof animationSpeeds] || 1.0; // Default to 1.0 if activity is not recognized
 
     useEffect(() => {
         if (animationRef.current) {
             if (activity === 'Standing') {
-                animationRef.current.pause(); // Pause animation if standing
+                animationRef.current.pause();
             } else {
-                animationRef.current.play(); // Play animation for other activities
+                animationRef.current.play();
             }
         }
     }, [activity]);
 
     useEffect(() => {
         if (animationRef.current && activity !== 'Standing') {
-            animationRef.current.play(); // Ensure animation is playing based on speed change and activity
+            animationRef.current.play();
         }
     }, [speed]);
 
     const handleNavigateToChallenges = () => {
-        navigation.navigate('Challenges'); // Navigate to the ChallengesScreen
+        navigation.navigate('Challenges');
     };
 
     const renderChallengeItem = ({ item }: { item: Challenge }) => (
@@ -88,7 +88,7 @@ const HomeScreen = () => {
                     renderItem={renderChallengeItem}
                     keyExtractor={(item) => item.title}
                     style={styles.challengesList}
-                    scrollEnabled={false} // Prevent scrolling within the challenges box
+                    scrollEnabled={false}
                 />
             </TouchableOpacity>
         </SafeAreaView>
@@ -103,35 +103,35 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     borderContainer: {
-        borderWidth: 1, // Border width for the container
-        borderColor: '#FFFAFA', // Border color for the container
-        borderTopWidth: 1, // Keep the top border
-        borderLeftWidth: 1, // Keep the left border
-        borderRightWidth: 1, // Keep the right border
-        borderBottomWidth: 0, // Remove the bottom border
-        borderRadius: 0, // No border radius
-        width: width, // Full screen width
-        height: height * 0.4, // Adjust height as needed, for example, 40% of the screen height
+        borderWidth: 1,
+        borderColor: '#FFFAFA',
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 0,
+        borderRadius: 0,
+        width: width,
+        height: height * 0.4,
         marginBottom: 20,
-        overflow: 'hidden', // Hide overflow to ensure clean borders
-        justifyContent: 'center', // Center content vertically
-        alignItems: 'center', // Center content horizontally
-        position: 'relative', // Relative position to contain absolutely positioned children
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
     },
     caloriesText: {
-        position: 'absolute', // Position absolutely to place at the top-left corner
-        top: 10, // Adjust top position as needed
-        left: 10, // Adjust left position as needed
+        position: 'absolute',
+        top: 10,
+        left: 10,
         fontSize: 12,
         color: '#FFFAFA',
         fontWeight: 'bold',
-        zIndex: 2, // Ensure calorie counter is on top
+        zIndex: 2,
     },
     stepCounterContainer: {
-        position: 'absolute', // Position absolutely within the borderContainer
-        top: 90, // Adjust to position above the animation
+        position: 'absolute',
+        top: 90,
         alignItems: 'center',
-        zIndex: 2, // Ensure step counter is on top
+        zIndex: 2,
     },
     stepsTodayText: {
         fontSize: 12,
@@ -147,16 +147,16 @@ const styles = StyleSheet.create({
     animation: {
         width: '80%',
         aspectRatio: 2,
-        position: 'absolute', // Ensure animation stays within its container
-        bottom: 0, // Align to bottom of the container
-        zIndex: 1, // Ensure animation is below the step counter
+        position: 'absolute',
+        bottom: 0,
+        zIndex: 1,
     },
     leftCornerLine: {
         position: 'absolute',
         bottom: 70,
         left: -40,
-        width: 200, // Adjust the length of the line
-        height: 1, // Line thickness
+        width: 200,
+        height: 1,
         backgroundColor: '#FFFAFA',
         transform: [{ rotate: '-50deg' }], // Angle upwards and inwards
     },
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 70,
         right: -40,
-        width: 200, // Adjust the length of the line
-        height: 1, // Line thickness
+        width: 200,
+        height: 1,
         backgroundColor: '#FFFAFA',
         transform: [{ rotate: '50deg' }], // Angle upwards and inwards
     },

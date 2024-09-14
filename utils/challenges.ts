@@ -6,7 +6,7 @@ export interface Challenge {
     goal: number;
     progress: number;
     isUnlocked: boolean;
-    claimed?: boolean; // Add this line
+    claimed?: boolean;
 }
 
 
