@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, Dimensions, ScrollView, Modal } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useSteps } from '../contexts/StepContext'; // Import useSteps
-import { useCalories } from '../contexts/CaloriesContext'; // Import useCalories
+import { useSteps } from '../contexts/StepContext';
+import { useCalories } from '../contexts/CaloriesContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -17,11 +17,11 @@ const ProfileScreen = () => {
         require('../assets/badges/badge1.png'),
         require('../assets/badges/badge2.png'),
         require('../assets/badges/badge3.png'),
+        require('../assets/badges/badge1.png'),
+        require('../assets/badges/badge2.png'),
     ];
 
-    const [showAllBadges, setShowAllBadges] = React.useState(false);
-
-    const displayedBadges = showAllBadges ? badges : badges.slice(0, 3);
+    const [modalVisible, setModalVisible] = useState(false);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -43,15 +43,13 @@ const ProfileScreen = () => {
                     <View style={styles.badgesContainer}>
                         <Text style={styles.badgesTitle}>Badges</Text>
                         <View style={styles.badgesRow}>
-                            {displayedBadges.map((badge, index) => (
+                            {badges.slice(0, 3).map((badge, index) => (
                                 <Image key={index} source={badge} style={styles.badge} />
                             ))}
                         </View>
-                        {badges.length > 3 && (
-                            <TouchableOpacity onPress={() => setShowAllBadges(!showAllBadges)} style={styles.showMoreButton}>
-                                <Text style={styles.showMoreText}>{showAllBadges ? 'Show Less' : 'Show More'}</Text>
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.showMoreButton}>
+                            <Text style={styles.showMoreText}>Show More</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.infoSeparator} />
@@ -94,6 +92,30 @@ const ProfileScreen = () => {
                     <Text style={styles.resetButtonText}>Reset</Text>
                 </TouchableOpacity>
             </ScrollView>
+
+            {/* Modal for displaying all badges */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>All Badges</Text>
+                        <View style={styles.modalBadgesContainer}>
+                            {badges.map((badge, index) => (
+                                <Image key={index} source={badge} style={styles.modalBadge} />
+                            ))}
+                        </View>
+                        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                            <Text style={styles.closeButtonText}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 };
@@ -125,24 +147,27 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 26,
-        fontWeight: 'bold',
+        fontFamily: 'gotham-black',
         color: '#FFF',
     },
     username: {
+        fontFamily: 'gotham-thin',
         fontSize: 18,
         color: '#FFF',
     },
     joinDate: {
+        paddingTop: 5,
         fontSize: 16,
+        fontFamily: 'gotham-thin',
         color: '#FFF',
     },
     streakContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 5,
     },
     streakNumber: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#FFF',
         marginHorizontal: 5,
     },
@@ -166,10 +191,9 @@ const styles = StyleSheet.create({
     },
     badgesTitle: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'gotham-black',
         color: '#FFF',
         paddingRight: 5,
-        marginBottom: 10,
         alignSelf: 'flex-start',
     },
     badgesRow: {
@@ -187,7 +211,8 @@ const styles = StyleSheet.create({
     },
     showMoreText: {
         fontSize: 16,
-        color: '#007BFF',
+        color: '#fff',
+        fontFamily: 'gotham-thin',
     },
     statsContainer: {
         paddingTop: 20,
@@ -218,12 +243,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     statsNumber: {
-        fontSize: 22,
+        fontSize: 18,
         color: '#FFF',
         marginBottom: 5,
+        fontFamily: 'gotham-black'
     },
     statsLabel: {
-        fontSize: 14,
+        fontSize: 12,
+        fontFamily: 'gotham-thin',
         color: '#FFF',
     },
     resetButton: {
@@ -236,6 +263,46 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    modalContent: {
+        width: width * 0.8,
+        backgroundColor: '#1E1E1E',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontFamily: 'gotham-black',
+        color: '#FFF',
+        marginBottom: 15,
+    },
+    modalBadgesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    },
+    modalBadge: {
+        width: 50,
+        height: 50,
+        margin: 10,
+    },
+    closeButton: {
+        marginTop: 20,
+        backgroundColor: '#007BFF',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    closeButtonText: {
+        color: '#FFF',
+        fontSize: 16,
     },
 });
 
