@@ -10,11 +10,10 @@ const ProfileScreen = () => {
     const { steps, resetSteps } = useSteps();
     const { calories } = useCalories();
 
-    const allTimeSteps = 10000;
+    const allTimeSteps = 10000; // Example value
     const allTimeCalories = Math.floor(allTimeSteps * 0.04);
 
-    // Example streak value, replace with actual streak logic
-    const streak = 7;
+    const streak = 7; // Example streak value
 
     const badges = [
         require('../assets/badges/badge1.png'),
@@ -41,11 +40,6 @@ const ProfileScreen = () => {
                             <Text style={styles.name}>John Doe</Text>
                             <Text style={styles.username}>@johndoe</Text>
                             <Text style={styles.joinDate}>Joined: January 2023</Text>
-                            <View style={styles.streakContainer}>
-                                <FontAwesome name="star" size={18} color="#FFF" />
-                                <Text style={styles.streakNumber}>{streak}-day</Text>
-                                <Text style={styles.streakLabel}>🔥 Streak</Text>
-                            </View>
                         </View>
 
                         <TouchableOpacity onPress={handleBadgesPress} style={styles.badgesContainer}>
@@ -61,8 +55,8 @@ const ProfileScreen = () => {
                 </View>
 
                 <View style={styles.statsContainer}>
-                    <View style={styles.statsRow}>
-                        <View style={styles.statItem}>
+                    <View style={styles.statsRowFullWidth}>
+                        <View style={styles.statItemFullWidth}>
                             <FontAwesome name="star" size={30} color="#FFF" style={styles.statIcon} />
                             <View style={styles.statTextContainer}>
                                 <Text style={styles.statsNumber}>{streak}</Text>
@@ -102,34 +96,43 @@ const ProfileScreen = () => {
                             </View>
                         </View>
                     </View>
+                    <View style={styles.statsRowFullWidth}>
+                        <View style={styles.statItemFullWidth}>
+                            <FontAwesome name="database" size={30} color="#FFF" style={styles.statIcon} />
+                            <View style={styles.statTextContainer}>
+                                <Text style={styles.statsNumber}>{JSON.stringify({ steps, calories })}</Text>
+                                <Text style={styles.statsLabel}>JSON Data</Text>
+                            </View>
+                        </View>
+                    </View>
                     <TouchableOpacity style={styles.resetButton} onPress={resetSteps}>
-                        <Text style={styles.resetButtonText}>Reset</Text>
+                        <Text style={styles.resetButtonText}>Reset Steps</Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
 
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>All Badges</Text>
-                        <View style={styles.modalBadgesContainer}>
-                            {badges.map((badge, index) => (
-                                <Image key={index} source={badge} style={styles.modalBadge} />
-                            ))}
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalContent}>
+                            <Text style={styles.modalTitle}>Badges</Text>
+                            <View style={styles.modalBadgesContainer}>
+                                {badges.map((badge, index) => (
+                                    <Image key={index} source={badge} style={styles.modalBadge} />
+                                ))}
+                            </View>
+                            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                                <Text style={styles.closeButtonText}>Close</Text>
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                            <Text style={styles.closeButtonText}>Close</Text>
-                        </TouchableOpacity>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
     scrollViewContent: {
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingBottom: 20, // Adjust padding as needed
+        paddingBottom: 20,
     },
     profileImage: {
         width: width,
@@ -176,20 +179,6 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         fontSize: 16,
         fontFamily: 'gotham-thin',
-        color: '#FFF',
-    },
-    streakContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 5,
-    },
-    streakNumber: {
-        fontSize: 18,
-        color: '#FFF',
-        marginHorizontal: 5,
-    },
-    streakLabel: {
-        fontSize: 16,
         color: '#FFF',
     },
     infoSeparator: {
@@ -234,6 +223,10 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 20,
     },
+    statsRowFullWidth: {
+        width: '100%',
+        marginBottom: 20,
+    },
     statItem: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -242,6 +235,15 @@ const styles = StyleSheet.create({
         borderColor: '#C1C1C1',
         padding: 10,
         width: width * 0.4,
+    },
+    statItemFullWidth: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 2,
+        borderColor: '#C1C1C1',
+        padding: 10,
+        width: '100%',
     },
     statIcon: {
         marginRight: 10,
@@ -257,38 +259,40 @@ const styles = StyleSheet.create({
         fontFamily: 'gotham-black',
     },
     statsLabel: {
-        fontSize: 12,
-        fontFamily: 'gotham-thin',
+        fontSize: 16,
         color: '#FFF',
+        fontFamily: 'gotham-thin',
     },
     resetButton: {
-        backgroundColor: '#CCC',
-        paddingVertical: 15,
-        paddingHorizontal: 40,
-        borderRadius: 30,
+        backgroundColor: '#C1C1C1',
+        borderRadius: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 20,
     },
     resetButtonText: {
-        color: '#FFF',
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
+        color: '#000',
+        fontFamily: 'gotham-thin',
     },
     modalOverlay: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        width: width * 0.8,
-        backgroundColor: '#1E1E1E',
-        padding: 20,
+        backgroundColor: '#121212',
         borderRadius: 10,
+        padding: 20,
         alignItems: 'center',
+        width: width * 0.8,
     },
     modalTitle: {
         fontSize: 24,
-        fontFamily: 'gotham-black',
         color: '#FFF',
-        marginBottom: 15,
+        fontFamily: 'gotham-black',
+        marginBottom: 10,
     },
     modalBadgesContainer: {
         flexDirection: 'row',
@@ -298,18 +302,18 @@ const styles = StyleSheet.create({
     modalBadge: {
         width: 50,
         height: 50,
-        margin: 10,
+        margin: 5,
     },
     closeButton: {
         marginTop: 20,
-        backgroundColor: '#007BFF',
+        backgroundColor: '#C1C1C1',
+        borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 5,
     },
     closeButtonText: {
-        color: '#FFF',
-        fontSize: 16,
+        color: '#000',
+        fontFamily: 'gotham-thin',
     },
 });
 

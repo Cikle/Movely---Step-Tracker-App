@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Accelerometer } from 'expo-sensors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface StepContextProps {
     steps: number;
@@ -11,74 +12,71 @@ const StepContext = createContext<StepContextProps | undefined>(undefined);
 
 export const StepProvider = ({ children }: { children: ReactNode }) => {
     const [steps, setSteps] = useState<number>(0);
+    const [activity, setActivity] = useState<string>('Standing');
     const [lastY, setLastY] = useState<number>(0);
     const [lastTimestamp, setLastTimestamp] = useState<number>(0);
-    const [activity, setActivity] = useState<string>('Standing');
     const [timeIntervals, setTimeIntervals] = useState<number[]>([]);
     const [lastMovementTime, setLastMovementTime] = useState<number>(Date.now());
 
-    const alpha = 0.9; // Filter smoothing factor
-    const lowPassFilter = (value: number, lastValue: number) => alpha * lastValue + (1 - alpha) * value;
-
-    // Time after which activity should be considered "Standing" if no movement
-    const inactivityTimeout = 3000; // 3 seconds of inactivity to consider "Standing"
-    const stepIntervalThreshold = 300; // Minimum interval between steps in milliseconds
-
+    // Load steps from AsyncStorage on mount
     useEffect(() => {
-        const subscription = Accelerometer.addListener((accelerometerData) => {
+        const loadSteps = async () => {
+            try {
+                const savedSteps = await AsyncStorage.getItem('steps');
+                if (savedSteps !== null) {
+                    setSteps(Number(savedSteps));
+                }
+            } catch (error) {
+                console.error('Failed to load steps from AsyncStorage:', error);
+            }
+        };
+        loadSteps();
+    }, []);
+
+    // Save steps to AsyncStorage when steps state changes
+    useEffect(() => {
+        const saveSteps = async () => {
+            try {
+                await AsyncStorage.setItem('steps', steps.toString());
+            } catch (error) {
+                console.error('Failed to save steps to AsyncStorage:', error);
+            }
+        };
+        saveSteps();
+    }, [steps]);
+
+    // Accelerometer setup and step counting logic
+    useEffect(() => {
+        Accelerometer.setUpdateInterval(100); // Update every 100ms
+
+        const subscription = Accelerometer.addListener(accelerometerData => {
             const { x, y, z } = accelerometerData;
-            const filteredY = lowPassFilter(y, lastY);
-            const magnitude = Math.sqrt(x * x + filteredY * filteredY + z * z);
-            const timestamp = Date.now();
 
-            // Step detection threshold
-            const stepThreshold = 1.25;
+            const magnitude = Math.sqrt(x * x + y * y + z * z);
 
-            if (magnitude > stepThreshold && (timestamp - lastTimestamp > stepIntervalThreshold)) {
-                setLastY(filteredY);
-                setLastTimestamp(timestamp);
-                setLastMovementTime(timestamp); // Update the last movement timestamp
-
-                setSteps((prevSteps) => prevSteps + 1);
-
-                // Calculate the time interval between this and the last step
-                const interval = timestamp - lastTimestamp;
-                setTimeIntervals((prevIntervals) => [...prevIntervals.slice(-9), interval]); // Keep the last 10 intervals
-
-                // Calculate steps per second based on recent intervals
-                if (timeIntervals.length > 0) {
-                    const avgInterval = timeIntervals.reduce((a, b) => a + b, 0) / timeIntervals.length;
-                    const stepsPerSecond = 1000 / avgInterval;
-
-                    // Classify the activity
-                    if (stepsPerSecond >= 2.8) {
-                        setActivity('Running');
-                    } else if (stepsPerSecond >= 1.8) {
-                        setActivity('Jogging');
-                    } else if (stepsPerSecond >= 0.5) {
-                        setActivity('Walking');
-                    } else {
-                        setActivity('Standing');
-                    }
+            // Activity detection logic
+            const currentTimestamp = Date.now();
+            if (magnitude > 1.2) {
+                const interval = currentTimestamp - lastTimestamp;
+                if (interval > 250) { // Minimum interval between steps
+                    setSteps(prevSteps => prevSteps + 1);
+                    setLastTimestamp(currentTimestamp);
+                    setLastMovementTime(currentTimestamp);
+                    setActivity('Walking'); // Update to Walking
+                }
+            } else {
+                if (currentTimestamp - lastMovementTime > 3000) { // No movement for 3 seconds
+                    setActivity('Standing'); // Update to Standing
                 }
             }
+
+            setLastY(y);
         });
-
-        Accelerometer.setUpdateInterval(100); // Update every 100ms for faster detection
-
-        // Check if user has been inactive for a period (3 seconds)
-        const inactivityCheck = setInterval(() => {
-            if (Date.now() - lastMovementTime > inactivityTimeout) {
-                setActivity('Standing');
-                setTimeIntervals([]); // Clear the intervals if no movement is detected
-            }
-        }, 1000); // Check inactivity every 1 second
 
         return () => {
             subscription.remove();
-            clearInterval(inactivityCheck);
         };
-    }, [lastY, lastTimestamp, timeIntervals, lastMovementTime]);
+    }, [lastY, lastTimestamp, lastMovementTime]);
 
     const resetSteps = () => setSteps(0);
 
