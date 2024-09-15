@@ -13,6 +13,9 @@ const ProfileScreen = () => {
     const allTimeSteps = 10000;
     const allTimeCalories = Math.floor(allTimeSteps * 0.04);
 
+    // Example streak value, replace with actual streak logic
+    const streak = 7;
+
     const badges = [
         require('../assets/badges/badge1.png'),
         require('../assets/badges/badge2.png'),
@@ -23,77 +26,88 @@ const ProfileScreen = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
+    const handleBadgesPress = () => {
+        setModalVisible(true);
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <Image source={require('../assets/profile-pic.jpg')} style={styles.profileImage} />
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                <Image source={require('../assets/profile-pic.jpg')} style={styles.profileImage} />
 
-            <View style={styles.infoWrapper}>
-                <View style={styles.infoContainer}>
-                    <View style={styles.userInfo}>
-                        <Text style={styles.name}>John Doe</Text>
-                        <Text style={styles.username}>@johndoe</Text>
-                        <Text style={styles.joinDate}>Joined: January 2023</Text>
-                        <View style={styles.streakContainer}>
-                            <FontAwesome name="star" size={18} color="#FFF" />
-                            <Text style={styles.streakNumber}>7-day</Text>
-                            <Text style={styles.streakLabel}>🔥 Streak</Text>
+                <View style={styles.infoWrapper}>
+                    <View style={styles.infoContainer}>
+                        <View style={styles.userInfo}>
+                            <Text style={styles.name}>John Doe</Text>
+                            <Text style={styles.username}>@johndoe</Text>
+                            <Text style={styles.joinDate}>Joined: January 2023</Text>
+                            <View style={styles.streakContainer}>
+                                <FontAwesome name="star" size={18} color="#FFF" />
+                                <Text style={styles.streakNumber}>{streak}-day</Text>
+                                <Text style={styles.streakLabel}>🔥 Streak</Text>
+                            </View>
                         </View>
-                    </View>
 
-                    <View style={styles.badgesContainer}>
-                        <Text style={styles.badgesTitle}>Badges</Text>
-                        <View style={styles.badgesRow}>
-                            {badges.slice(0, 3).map((badge, index) => (
-                                <Image key={index} source={badge} style={styles.badge} />
-                            ))}
-                        </View>
-                        <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.showMoreButton}>
-                            <Text style={styles.showMoreText}>Show More</Text>
+                        <TouchableOpacity onPress={handleBadgesPress} style={styles.badgesContainer}>
+                            <Text style={styles.badgesTitle}>Badges</Text>
+                            <View style={styles.badgesRow}>
+                                {badges.slice(0, 3).map((badge, index) => (
+                                    <Image key={index} source={badge} style={styles.badge} />
+                                ))}
+                            </View>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.infoSeparator} />
                 </View>
-                <View style={styles.infoSeparator} />
-            </View>
 
-            <ScrollView contentContainerStyle={styles.statsContainer}>
-                <View style={styles.statsRow}>
-                    <View style={styles.statItem}>
-                        <FontAwesome name="print" size={30} color="#FFF" style={styles.statIcon} />
-                        <View style={styles.statTextContainer}>
-                            <Text style={styles.statsNumber}>{steps}</Text>
-                            <Text style={styles.statsLabel}>Today's Steps</Text>
+                <View style={styles.statsContainer}>
+                    <View style={styles.statsRow}>
+                        <View style={styles.statItem}>
+                            <FontAwesome name="star" size={30} color="#FFF" style={styles.statIcon} />
+                            <View style={styles.statTextContainer}>
+                                <Text style={styles.statsNumber}>{streak}</Text>
+                                <Text style={styles.statsLabel}>Streak</Text>
+                            </View>
                         </View>
                     </View>
-                    <View style={styles.statItem}>
-                        <FontAwesome name="trophy" size={30} color="#FFF" style={styles.statIcon} />
-                        <View style={styles.statTextContainer}>
-                            <Text style={styles.statsNumber}>{allTimeSteps}</Text>
-                            <Text style={styles.statsLabel}>All-Time Steps</Text>
+                    <View style={styles.statsRow}>
+                        <View style={styles.statItem}>
+                            <FontAwesome name="print" size={30} color="#FFF" style={styles.statIcon} />
+                            <View style={styles.statTextContainer}>
+                                <Text style={styles.statsNumber}>{steps}</Text>
+                                <Text style={styles.statsLabel}>Today's Steps</Text>
+                            </View>
+                        </View>
+                        <View style={styles.statItem}>
+                            <FontAwesome name="trophy" size={30} color="#FFF" style={styles.statIcon} />
+                            <View style={styles.statTextContainer}>
+                                <Text style={styles.statsNumber}>{allTimeSteps}</Text>
+                                <Text style={styles.statsLabel}>All-Time Steps</Text>
+                            </View>
                         </View>
                     </View>
+                    <View style={styles.statsRow}>
+                        <View style={styles.statItem}>
+                            <FontAwesome name="fire" size={30} color="#FFF" style={styles.statIcon} />
+                            <View style={styles.statTextContainer}>
+                                <Text style={styles.statsNumber}>{calories} kcal</Text>
+                                <Text style={styles.statsLabel}>Today's Calories Burnt</Text>
+                            </View>
+                        </View>
+                        <View style={styles.statItem}>
+                            <FontAwesome name="fire" size={30} color="#FFF" style={styles.statIcon} />
+                            <View style={styles.statTextContainer}>
+                                <Text style={styles.statsNumber}>{allTimeCalories} kcal</Text>
+                                <Text style={styles.statsLabel}>All-Time Calories Burnt</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <TouchableOpacity style={styles.resetButton} onPress={resetSteps}>
+                        <Text style={styles.resetButtonText}>Reset</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.statsRow}>
-                    <View style={styles.statItem}>
-                        <FontAwesome name="fire" size={30} color="#FFF" style={styles.statIcon} />
-                        <View style={styles.statTextContainer}>
-                            <Text style={styles.statsNumber}>{calories} kcal</Text>
-                            <Text style={styles.statsLabel}>Today's Calories Burnt</Text>
-                        </View>
-                    </View>
-                    <View style={styles.statItem}>
-                        <FontAwesome name="fire" size={30} color="#FFF" style={styles.statIcon} />
-                        <View style={styles.statTextContainer}>
-                            <Text style={styles.statsNumber}>{allTimeCalories} kcal</Text>
-                            <Text style={styles.statsLabel}>All-Time Calories Burnt</Text>
-                        </View>
-                    </View>
-                </View>
-                <TouchableOpacity style={styles.resetButton} onPress={resetSteps}>
-                    <Text style={styles.resetButtonText}>Reset</Text>
-                </TouchableOpacity>
             </ScrollView>
 
-            {/* Modal for displaying all badges */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -124,8 +138,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#121212',
+    },
+    scrollViewContent: {
         alignItems: 'center',
         paddingHorizontal: 20,
+        paddingBottom: 20, // Adjust padding as needed
     },
     profileImage: {
         width: width,
@@ -206,19 +223,10 @@ const styles = StyleSheet.create({
         height: 30,
         margin: 5,
     },
-    showMoreButton: {
-        marginTop: 10,
-    },
-    showMoreText: {
-        fontSize: 16,
-        color: '#fff',
-        fontFamily: 'gotham-thin',
-    },
     statsContainer: {
         paddingTop: 20,
         width: '100%',
         alignItems: 'center',
-        paddingBottom: 20,
     },
     statsRow: {
         flexDirection: 'row',
@@ -246,7 +254,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#FFF',
         marginBottom: 5,
-        fontFamily: 'gotham-black'
+        fontFamily: 'gotham-black',
     },
     statsLabel: {
         fontSize: 12,
@@ -268,7 +276,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
     },
     modalContent: {
         width: width * 0.8,
