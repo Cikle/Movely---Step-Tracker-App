@@ -117,7 +117,6 @@ export default function App() {
             <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: '' }} />
           </Tab.Navigator>
 
-          {/* Modal for first-time user input */}
           <Modal
             animationType="slide"
             transparent={true}

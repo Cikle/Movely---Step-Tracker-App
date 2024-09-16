@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Vibration } from 'react-native'; // Import Vibration
 import { useSteps } from '../contexts/StepContext';
 import { useChallenges, Challenge } from '../utils/challenges';
 import ChallengeComponent from '../components/ChallengeComponent'; // Adjust path as needed
@@ -11,6 +11,8 @@ const ChallengesScreen = () => {
     const handleClaim = (title: string) => {
         const updatedChallenges = challenges.map(challenge => {
             if (challenge.title === title && challenge.isUnlocked && !challenge.claimed) {
+                // Trigger vibration upon claiming the challenge
+                Vibration.vibrate(500); // Vibrate for 500ms
                 return { ...challenge, claimed: true };
             }
             return challenge;
