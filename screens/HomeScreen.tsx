@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity, Fla
 import LottieView from 'lottie-react-native';
 import { useSteps } from '../contexts/StepContext';
 import { useChallenges, Challenge } from '../utils/challenges';
-import { useCalories } from '../contexts/CaloriesContext'; // Import useCalories
+import { useCalories } from '../contexts/CaloriesContext';
 import streetAnimation from '../assets/Street_Animation.json';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window'); // Get screen width and height
+const { width, height } = Dimensions.get('window');
 
 type RootStackParamList = {
     Home: undefined;
@@ -17,7 +17,7 @@ type RootStackParamList = {
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
-// animation speed
+// animation speed(s) 
 const animationSpeeds: { [key: string]: number } = {
     Standing: 0.0,
     Walking: 1.0,

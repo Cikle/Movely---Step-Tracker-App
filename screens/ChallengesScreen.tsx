@@ -11,8 +11,7 @@ const ChallengesScreen = () => {
     const handleClaim = (title: string) => {
         const updatedChallenges = challenges.map(challenge => {
             if (challenge.title === title && challenge.isUnlocked && !challenge.claimed) {
-                // Trigger vibration upon claiming the challenge
-                Vibration.vibrate(500); // Vibrate for 500ms
+                Vibration.vibrate(300); // Vibrate for 300ms
                 return { ...challenge, claimed: true };
             }
             return challenge;

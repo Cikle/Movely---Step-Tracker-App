@@ -10,10 +10,10 @@ const ProfileScreen = () => {
     const { steps, resetSteps } = useSteps();
     const { calories } = useCalories();
 
-    const allTimeSteps = 10000; // Example value
+    const allTimeSteps = 10000;
     const allTimeCalories = Math.floor(allTimeSteps * 0.04);
 
-    const streak = 7; // Example streak value
+    const streak = 7;
 
     const badges = [
         require('../assets/badges/badge1.png'),

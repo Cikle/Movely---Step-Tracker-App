@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useSteps } from './StepContext'; // Import useSteps from StepContext
+import { useSteps } from './StepContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface CaloriesContextType {
@@ -18,7 +18,7 @@ export const CaloriesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, [steps]);
 
     useEffect(() => {
-        // Save calories to AsyncStorage
+        // Save calories to AsyncStorage / Could've just calculated it but idk
         const saveCalories = async () => {
             try {
                 await AsyncStorage.setItem('calories', calories.toString());

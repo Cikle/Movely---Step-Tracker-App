@@ -47,7 +47,7 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
 
     // Accelerometer setup and step counting logic
     useEffect(() => {
-        Accelerometer.setUpdateInterval(100); // Update every 100ms
+        Accelerometer.setUpdateInterval(100);
 
         const subscription = Accelerometer.addListener(accelerometerData => {
             const { x, y, z } = accelerometerData;
@@ -58,14 +58,14 @@ export const StepProvider = ({ children }: { children: ReactNode }) => {
             const currentTimestamp = Date.now();
             if (magnitude > 1.2) {
                 const interval = currentTimestamp - lastTimestamp;
-                if (interval > 250) { // Minimum interval between steps
+                if (interval > 250) {
                     setSteps(prevSteps => prevSteps + 1);
                     setLastTimestamp(currentTimestamp);
                     setLastMovementTime(currentTimestamp);
-                    setActivity('Walking'); // Update to Walking
+                    setActivity('Walking');
                 }
             } else {
-                if (currentTimestamp - lastMovementTime > 3000) { // No movement for 3 seconds
+                if (currentTimestamp - lastMovementTime > 3000) { // If theres no movement for 3 seconds the activity schanges to standing
                     setActivity('Standing'); // Update to Standing
                 }
             }
