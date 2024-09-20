@@ -29,7 +29,7 @@ Clone the repository or download the project as a ZIP:
 
 bash
 
-git clone https://github.com/yourusername/step-tracker-app.git
+git clone [https://github.com/yourusername/step-tracker-app.git](https://github.com/Cikle/Movely.git)
 
 Navigate to the project directory:
 
