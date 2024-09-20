@@ -52,10 +52,10 @@ npm install
 To use the Accelerometer and other libraries, install the following:
 
 ```bash
-expo install expo-sensors
-expo install @react-native-async-storage/async-storage
-expo install lottie-react-native
-expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
+npm install expo-sensors
+npm install @react-native-async-storage/async-storage
+npm install lottie-react-native
+npm install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
 ```
 
 ### Start the Application
@@ -63,7 +63,7 @@ expo install react-native-gesture-handler react-native-reanimated react-native-s
 Start the app:
 
 ```bash
-expo start
+npm  start
 ```
 
 ## Technologies Used
