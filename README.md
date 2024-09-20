@@ -24,9 +24,9 @@ The Step Tracker App is a mobile application developed using React Native and Ex
 
 Clone the Repository
 
-    Clone the repository or download the project as a ZIP:
+Clone the repository or download the project as a ZIP:
 
-    bash
+bash
 
 git clone https://github.com/yourusername/step-tracker-app.git
 
@@ -34,23 +34,34 @@ Navigate to the project directory:
 
 bash
 
-    cd step-tracker-app
+cd step-tracker-app
 
 Install Dependencies
 
-    Install the required packages:
+Install the required packages:
 
-    bash
+bash
 
-    npm install
+npm install
+
+Install Additional Dependencies
+
+To use the Accelerometer and other libraries, install the following:
+
+bash
+
+expo install expo-sensors
+expo install @react-native-async-storage/async-storage
+expo install lottie-react-native
+expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
 
 Start the Application
 
-    Start the app:
+Start the app:
 
-    bash
+bash
 
-    expo start
+expo start
 
 Technologies Used
 
@@ -73,25 +84,3 @@ Future Improvements
     Implement user authentication
     Add social sharing features
     Introduce more detailed analytics on user activity
-
-Contributing
-
-Contributions are welcome! Please fork the repository and create a pull request for any changes.
-License
-
-This project is licensed under the MIT License.
-Contact
-
-For any questions or feedback, feel free to reach out:
-
-    Your Name: [Your Email]
-    GitHub: Your GitHub Profile
-
-Project Repository
-
-You can find the complete project here: Step Tracker App GitHub Repository
-
-sql
-
-
-You can copy and paste this into your `.md` file. Feel free to update the placeholders with your actual information!
