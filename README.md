@@ -1,3 +1,4 @@
+
 # Movely, The Step Tracker App
 
 ## Overview
@@ -19,69 +20,70 @@ The Step Tracker App is a mobile application developed using React Native and Ex
 
 1. **Node.js**: Install Node.js if you haven't already.
 2. **Expo CLI**: Install Expo CLI globally to run the React Native app:
-   
+
    ```bash
    npm install -g expo-cli
+   ```
 
-Clone the Repository
+### Clone the Repository
 
 Clone the repository or download the project as a ZIP:
 
-bash
-
-git clone [https://github.com/yourusername/step-tracker-app.git](https://github.com/Cikle/Movely.git)
+```bash
+git clone https://github.com/Cikle/Movely.git
+```
 
 Navigate to the project directory:
 
-bash
-
+```bash
 cd step-tracker-app
+```
 
-Install Dependencies
+### Install Dependencies
 
 Install the required packages:
 
-bash
-
+```bash
 npm install
+```
 
-Install Additional Dependencies
+### Install Additional Dependencies
 
 To use the Accelerometer and other libraries, install the following:
 
-bash
-
+```bash
 expo install expo-sensors
 expo install @react-native-async-storage/async-storage
 expo install lottie-react-native
 expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
+```
 
-Start the Application
+### Start the Application
 
 Start the app:
 
-bash
-
+```bash
 expo start
+```
 
-Technologies Used
+## Technologies Used
 
-    React Native: For building the mobile app
-    Expo: For easy development and deployment
-    React Navigation: For navigation between screens
-    Lottie: For animations
-    AsyncStorage: For local data storage
-    Expo Sensors: For accessing device sensors
+- React Native: For building the mobile app
+- Expo: For easy development and deployment
+- React Navigation: For navigation between screens
+- Lottie: For animations
+- AsyncStorage: For local data storage
+- Expo Sensors: For accessing device sensors
 
-Usage
+## Usage
 
-    Open the app on your device or simulator.
-    Start walking to track your steps.
-    Access the challenges screen to view and manage your step challenges.
-    Monitor your profile and view your step statistics.
+1. Open the app on your device or simulator.
+2. Start walking to track your steps.
+3. Access the challenges screen to view and manage your step challenges.
+4. Monitor your profile and view your step statistics.
 
-Future Improvements
+## Future Improvements
 
-    Implement user authentication
-    Add social sharing features
-    Introduce more detailed analytics on user activity
+- Implement user authentication
+- Add social sharing features
+- Introduce more detailed analytics on user activity
