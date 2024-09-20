@@ -19,6 +19,7 @@ The Step Tracker App is a mobile application developed using React Native and Ex
 
 1. **Node.js**: Install Node.js if you haven't already.
 2. **Expo CLI**: Install Expo CLI globally to run the React Native app:
+   
    ```bash
    npm install -g expo-cli
 
