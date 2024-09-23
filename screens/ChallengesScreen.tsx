@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, FlatList, Vibration } from 'react-native'; // Import Vibration
 import { useSteps } from '../contexts/StepContext';
 import { useChallenges, Challenge } from '../utils/challenges';
-import ChallengeComponent from '../components/ChallengeComponent'; // Adjust path as needed
+import ChallengeComponent from '../components/ChallengeComponent';
 
 const ChallengesScreen = () => {
     const { steps } = useSteps();
