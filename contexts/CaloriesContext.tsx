@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSteps } from './StepContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//Asked ChatGPT to create me a CaloriesContext file instead of calculating it inside of the StepContext (it was just a 0.04 Multiplier from the steps)
+//Asked ChatGPT: "create me a CaloriesContext file instead of calculating it inside of the StepContext" (it was just a 0.04 Multiplier from the steps)
 interface CaloriesContextType {
     calories: number;
 }
