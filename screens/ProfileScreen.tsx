@@ -4,6 +4,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSteps } from '../contexts/StepContext';
 import { useCalories } from '../contexts/CaloriesContext';
 
+//Asked ChatGPT: "could you please fix the badges so when I press on the container it displays them on like the full screen instead of expanding the container?"
+
 const { width, height } = Dimensions.get('window');
 
 const ProfileScreen = () => {
