@@ -20,6 +20,8 @@ import {
   Alert
 } from 'react-native';
 
+//Asked ChatGPT why my code keeps crashing when trying to start the App, which it then fixed (At the start of the project)
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
