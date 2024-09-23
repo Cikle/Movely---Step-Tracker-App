@@ -20,7 +20,7 @@ import {
   Alert
 } from 'react-native';
 
-//Asked ChatGPT why my code keeps crashing when trying to start the App, which it then fixed (At the start of the project)
+//Asked ChatGPT: "why does my App crash whenever I try to launch it in expo?", which it then fixed (At the start of the project)
 
 const Tab = createBottomTabNavigator();
 
