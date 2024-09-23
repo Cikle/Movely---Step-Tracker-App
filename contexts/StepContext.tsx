@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { Accelerometer } from 'expo-sensors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//Asked ChatGPT why my code keeps crashing when trying to start the App, which it then fixed (At the start of the project)
+//Asked ChatGPT: "why does my App crash whenever I try to launch it in expo?", which it then fixed (At the start of the project)
 
 interface StepContextProps {
     steps: number;
