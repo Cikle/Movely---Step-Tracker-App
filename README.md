@@ -84,6 +84,8 @@ npm  start
 
 ## Future Improvements
 
+[mahara]([url](https://portfolio.bbbaden.ch/view/view.php?t=ba8c32fe5cd61b37ffd1))
+
 - Implement user authentication
 - Add social sharing features
 - Introduce more detailed analytics on user activity
